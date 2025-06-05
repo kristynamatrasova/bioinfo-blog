@@ -1,2 +1,4 @@
 <?php
-define('BASE_URL', '/bioinfo-blog/');
+session_start();
+
+define('BASE_URL', '/bioinfo-blog/bioinfo-blog/');

@@ -9,29 +9,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = trim($_POST['username']);
   $password = $_POST['password'];
 
-  if ($username && $password) {
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    if ($stmt->fetch()) {
-      $error = 'Uživatelské jméno již existuje.';
-    } else {
-      $hashed = password_hash($password, PASSWORD_DEFAULT);
-      $insert = $pdo->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-      $insert->execute([$username, $hashed]);
-      header('Location: ' . BASE_URL . 'user/login.php');
-      exit;
-    }
+  $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+  $stmt->execute([$username]);
+  if ($stmt->fetch()) {
+    $error = 'Uživatelské jméno již existuje.';
   } else {
-    $error = 'Vyplňte prosím všechna pole.';
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
+    $pdo->prepare("INSERT INTO users (username, password) VALUES (?, ?)")->execute([$username, $hashed]);
+    header('Location: ' . BASE_URL . 'user/login.php');
+    exit;
   }
 }
 ?>
 
 <h2>Registrace</h2>
-<?php if ($error): ?><p style="color:red;"><?= $error ?></p><?php endif; ?>
+<?php if ($error): ?><p class="error"><?= $error ?></p><?php endif; ?>
 <form method="post">
-  <label>Uživatelské jméno:<br><input type="text" name="username" required></label><br><br>
-  <label>Heslo:<br><input type="password" name="password" required></label><br><br>
+  <input type="text" name="username" placeholder="Uživatelské jméno" required>
+  <input type="password" name="password" placeholder="Heslo" required>
   <button type="submit">Registrovat se</button>
 </form>
 

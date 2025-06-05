@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <h2>Přihlášení</h2>
-<?php if ($error): ?><p style="color:red;"><?= $error ?></p><?php endif; ?>
+<?php if ($error): ?><p class="error"><?= $error ?></p><?php endif; ?>
 <form method="post">
-  <label>Přihlašovací jméno:<br><input type="text" name="username" required></label><br><br>
-  <label>Heslo:<br><input type="password" name="password" required></label><br><br>
+  <input type="text" name="username" placeholder="Uživatelské jméno" required>
+  <input type="password" name="password" placeholder="Heslo" required>
   <button type="submit">Přihlásit se</button>
 </form>
 
