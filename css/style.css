@@ -167,3 +167,74 @@ form button:hover {
   color: #ff6a6a;
   margin-bottom: 1rem;
 }
+/* Horní menu (header) */
+.top-bar {
+  background-color: #191933;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #2a2a4a;
+}
+.top-bar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo-img {
+  height: 32px;
+  margin-right: 0.5rem;
+}
+.logo-text {
+  color: #f0f0f0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.main-nav a {
+  color: #f0f0f0;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.main-nav a:hover {
+  color: #4c7ef3;
+}
+
+/* Obsah */
+.main-content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.comment-controls {
+  margin-top: 0.5rem;
+}
+.comment-controls a {
+  margin-right: 1rem;
+  font-size: 0.9rem;
+}
+.admin-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.btn-admin {
+  color: #ffffff;
+  background-color: #4c7ef3;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+.btn-delete {
+  color: #fff;
+  background-color: #d64545;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
