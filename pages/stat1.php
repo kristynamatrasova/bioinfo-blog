@@ -11,6 +11,11 @@ require_once '../includes/header.php';
   <p>
     V rámci bioinformatiky se využívají specializované algoritmy a software pro analýzu genomu, identifikaci mutací, predikci proteinových struktur a další. Bez ní by nebylo možné efektivně interpretovat rozsáhlé datové soubory, které biologický výzkum generuje.
   </p>
-</section>
+<div class="static-navigation">
+  <!-- Žádný předchozí -->
+  <span></span>
+  <a href="stat2.php" class="btn-nav">Sekvenování DNA &raquo;</a>
+</div>
+
 
 <?php include '../includes/footer.php'; ?>
