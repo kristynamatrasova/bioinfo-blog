@@ -25,7 +25,6 @@ require_once 'config.php';
             <li><a href="<?= BASE_URL ?>user/logout.php">Odhlásit se (<?= htmlspecialchars($_SESSION['username']) ?>)</a></li>
           <?php else: ?>
             <li><a href="<?= BASE_URL ?>user/login.php">Přihlásit se</a></li>
-            <li><a href="<?= BASE_URL ?>user/register.php">Registrovat</a></li>
           <?php endif; ?>
         </ul>
       </nav>

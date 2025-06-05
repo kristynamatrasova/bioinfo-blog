@@ -1,20 +1,33 @@
 <?php
 require_once 'includes/config.php';
-require_once 'includes/db.php';
 require_once 'includes/header.php';
-
-$stmt = $pdo->query("SELECT p.*, u.username FROM posts p JOIN users u ON p.user_id = u.id ORDER BY created_at DESC");
-$posts = $stmt->fetchAll();
 ?>
 
-<h2>Nejnovější články</h2>
+<section class="home-welcome">
+  <h1>Bioinformatický portál</h1>
+  <p>Vítejte na informačním portálu o bioinformatice. Níže najdete úvodní články k tématu.</p>
+</section>
 
-<?php foreach ($posts as $post): ?>
-  <div class="article-preview">
-    <h3><a href="<?= BASE_URL ?>blog/post.php?id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h3>
-    <p><?= nl2br(htmlspecialchars(substr($post['content'], 0, 200))) ?>...</p>
-    <small>Autor: <?= htmlspecialchars($post['username']) ?> | <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></small>
-  </div>
-<?php endforeach; ?>
+<section class="static-list">
+  <article>
+    <h2><a href="<?= BASE_URL ?>pages/stat1.php">Úvod do bioinformatiky</a></h2>
+    <p>Základní přehled o tom, co je bioinformatika a proč je důležitá...</p>
+  </article>
+
+  <article>
+    <h2><a href="<?= BASE_URL ?>pages/stat2.php">Sekvenování DNA</a></h2>
+    <p>Jak se získávají genetická data a jak je bioinformatika zpracovává...</p>
+  </article>
+
+  <article>
+    <h2><a href="<?= BASE_URL ?>pages/stat3.php">Proteinová struktura</a></h2>
+    <p>Přehled přístupů k predikci a modelování proteinů...</p>
+  </article>
+
+  <article>
+    <h2><a href="<?= BASE_URL ?>pages/stat4.php">Nástroje v bioinformatice</a></h2>
+    <p>Přehled běžně používaných nástrojů a databází...</p>
+  </article>
+</section>
 
 <?php include 'includes/footer.php'; ?>
