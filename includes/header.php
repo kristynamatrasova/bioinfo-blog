@@ -21,7 +21,7 @@ require_once 'config.php';
         <ul>
           <li><a href="<?= BASE_URL ?>index.php">Domů</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
-            <li><a href="<?= BASE_URL ?>user/create.php">Přidat článek</a></li>
+            <li><a href="<?= BASE_URL ?>user/create.php">Přidat příspěvek</a></li>
             <li><a href="<?= BASE_URL ?>user/logout.php">Odhlásit se (<?= htmlspecialchars($_SESSION['username']) ?>)</a></li>
           <?php else: ?>
             <li><a href="<?= BASE_URL ?>user/login.php">Přihlásit se</a></li>

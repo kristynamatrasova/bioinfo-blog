@@ -24,20 +24,20 @@ if (!$post) {
     exit;
 }
 
-// Uložení komentáře
+// Zpracování nového komentáře
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     $comment = trim($_POST['comment']);
-    if ($comment) {
+    if ($comment !== '') {
         $insert = $pdo->prepare("INSERT INTO comments (post_id, user_id, comment) VALUES (?, ?, ?)");
         $insert->execute([$id, $_SESSION['user_id'], $comment]);
         header("Location: post.php?id=" . $id);
         exit;
     } else {
-        echo "<p style='color:red;'>Komentář nesmí být prázdný.</p>";
+        echo "<p class='error'>Komentář nesmí být prázdný.</p>";
     }
 }
 
-// Výpis komentářů
+// Načtení komentářů
 $comments = $pdo->prepare("SELECT c.*, u.username 
                            FROM comments c 
                            JOIN users u ON c.user_id = u.id 
@@ -47,61 +47,81 @@ $comments->execute([$id]);
 $commentList = $comments->fetchAll();
 ?>
 
-<section class="article-detail">
-    <h1><?= htmlspecialchars($post['title']) ?></h1>
-    <p class="meta">Autor: <?= htmlspecialchars($post['username']) ?> | <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></p>
-    <p class="content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
+<div class="layout">
+  <!-- SIDEBAR vlevo -->
+  <aside class="sidebar">
+    <h3>Navigace</h3>
+    <ul>
+      <li><a href="<?= BASE_URL ?>index.php">Příspěvky</a></li>
+      <li><a href="<?= BASE_URL ?>pages/stat1.php">Statické články</a></li>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <li><a href="<?= BASE_URL ?>users/profile.php">Můj profil</a></li>
+        <li><a href="<?= BASE_URL ?>comments/my_comments.php">Moje komentáře</a></li>
+        <li><a href="<?= BASE_URL ?>quiz/index.php">Kvíz</a></li>
+      <?php endif; ?>
+    </ul>
+  </aside>
 
-    <?php if (
-        isset($_SESSION['user_id']) &&
-        (
-            $_SESSION['user_id'] == $post['user_id'] ||
-            ($_SESSION['is_admin'] ?? 0)
-        )
-    ): ?>
+  <main class="main-content">
+    <!-- Článek -->
+    <section class="article-detail">
+      <h1><?= htmlspecialchars($post['title']) ?></h1>
+      <p class="meta">Autor: <?= htmlspecialchars($post['username']) ?> | <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></p>
+      <div class="content"><?= nl2br(htmlspecialchars($post['content'])) ?></div>
+
+      <?php if (
+          isset($_SESSION['user_id']) &&
+          (
+              $_SESSION['user_id'] == $post['user_id'] ||
+              ($_SESSION['is_admin'] ?? 0)
+          )
+      ): ?>
         <div class="admin-controls">
-            <a href="<?= BASE_URL ?>user/edit.php?id=<?= $post['id'] ?>" class="btn-admin">✏️ Upravit</a>
-            <a href="<?= BASE_URL ?>user/delete.php?id=<?= $post['id'] ?>" class="btn-delete" onclick="return confirm('Opravdu chcete smazat tento článek?');">🗑️ Smazat</a>
+          <a href="<?= BASE_URL ?>posts/edit.php?id=<?= $post['id'] ?>" class="btn-admin">Upravit</a>
+          <a href="<?= BASE_URL ?>posts/delete.php?id=<?= $post['id'] ?>" class="btn-delete" onclick="return confirm('Opravdu chcete smazat tento článek?');">Smazat</a>
         </div>
-    <?php endif; ?>
-</section>
+      <?php endif; ?>
+    </section>
 
-<section class="comments-section">
-    <h2>Komentáře</h2>
+    <!-- Komentáře -->
+    <section class="comments-section">
+      <h2>Komentáře</h2>
 
-    <?php if ($commentList): ?>
+      <?php if ($commentList): ?>
         <?php foreach ($commentList as $c): ?>
-            <div class="comment">
-                <p><strong><?= htmlspecialchars($c['username']) ?></strong></p>
-                <p><?= nl2br(htmlspecialchars($c['comment'])) ?></p>
-                <span class="comment-time"><?= date('d.m.Y H:i', strtotime($c['created_at'])) ?></span>
+          <div class="comment">
+            <p><strong><?= htmlspecialchars($c['username']) ?></strong></p>
+            <p><?= nl2br(htmlspecialchars($c['comment'])) ?></p>
+            <span class="comment-time"><?= date('d.m.Y H:i', strtotime($c['created_at'])) ?></span>
 
-                <?php if (
-                    isset($_SESSION['user_id']) &&
-                    (
-                        $_SESSION['user_id'] == $c['user_id'] ||
-                        ($_SESSION['is_admin'] ?? 0)
-                    )
-                ): ?>
-                    <div class="comment-controls">
-                        <a class="btn-admin" href="<?= BASE_URL ?>comments/edit.php?id=<?= $c['id'] ?>&post_id=<?= $id ?>">✏️ Upravit</a>
-                        <a class="btn-delete" href="<?= BASE_URL ?>comments/delete.php?id=<?= $c['id'] ?>&post_id=<?= $id ?>" onclick="return confirm('Opravdu smazat komentář?');">🗑️ Smazat</a>
-                    </div>
-                <?php endif; ?>
-            </div>
+            <?php if (
+                isset($_SESSION['user_id']) &&
+                (
+                    $_SESSION['user_id'] == $c['user_id'] ||
+                    ($_SESSION['is_admin'] ?? 0)
+                )
+            ): ?>
+              <div class="comment-controls">
+                <a class="btn-admin" href="<?= BASE_URL ?>comments/edit.php?id=<?= $c['id'] ?>&post_id=<?= $id ?>">Upravit</a>
+                <a class="btn-delete" href="<?= BASE_URL ?>comments/delete.php?id=<?= $c['id'] ?>&post_id=<?= $id ?>" onclick="return confirm('Opravdu smazat komentář?');">Smazat</a>
+              </div>
+            <?php endif; ?>
+          </div>
         <?php endforeach; ?>
-    <?php else: ?>
+      <?php else: ?>
         <p>Zatím žádné komentáře.</p>
-    <?php endif; ?>
+      <?php endif; ?>
 
-    <?php if (isset($_SESSION['user_id'])): ?>
+      <?php if (isset($_SESSION['user_id'])): ?>
         <form method="post" class="comment-form">
-            <textarea name="comment" placeholder="Napište komentář..." required></textarea>
-            <button type="submit">Odeslat komentář</button>
+          <textarea name="comment" placeholder="Napište komentář..." required></textarea>
+          <button type="submit">Odeslat komentář</button>
         </form>
-    <?php else: ?>
-        <p><a href="<?= BASE_URL ?>user/login.php">Přihlaste se</a>, abyste mohli přidat komentář.</p>
-    <?php endif; ?>
-</section>
+      <?php else: ?>
+        <p><a href="<?= BASE_URL ?>users/login.php">Přihlaste se</a>, abyste mohli přidat komentář.</p>
+      <?php endif; ?>
+    </section>
+  </main>
+</div>
 
 <?php include '../includes/footer.php'; ?>

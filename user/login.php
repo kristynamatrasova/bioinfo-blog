@@ -32,5 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <input type="password" name="password" placeholder="Heslo" required>
   <button type="submit">Přihlásit se</button>
 </form>
+<p style="margin-top: 1rem;">
+  Nemáte účet? <a href="register.php">Zaregistrujte se zde</a>.
+</p>
 
 <?php include '../includes/footer.php'; ?>
