@@ -387,3 +387,29 @@ input[disabled] {
   font-weight: bold;
   color: #4caf50;
 }
+.sidebar {
+  width: 220px;
+  float: left;
+  background-color: #2b2b40;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-right: 2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar ul a {
+  color: #4c7ef3;
+  text-decoration: none;
+}
+
+.sidebar ul a:hover {
+  text-decoration: underline;
+}

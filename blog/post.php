@@ -52,8 +52,8 @@ $commentList = $comments->fetchAll();
   <aside class="sidebar">
     <h3>Navigace</h3>
     <ul>
-      <li><a href="<?= BASE_URL ?>index.php">Příspěvky</a></li>
-      <li><a href="<?= BASE_URL ?>pages/stat1.php">Statické články</a></li>
+      <li><a href="<?= BASE_URL ?>blog/all_posts.php">Příspěvky</a></li>
+      <li><a href="<?= BASE_URL ?>pages/stat1.php">Články</a></li>
       <?php if (isset($_SESSION['user_id'])): ?>
         <li><a href="<?= BASE_URL ?>users/profile.php">Můj profil</a></li>
         <li><a href="<?= BASE_URL ?>comments/my_comments.php">Moje komentáře</a></li>
