@@ -1,7 +1,21 @@
 <?php
-require_once 'includes/config.php';
-require_once 'includes/db.php';
-require_once 'includes/header.php';
+
+require_once '../config/config.php';
+require_once '../core/Router.php';
+require_once '../core/Controller.php';
+require_once '../core/Model.php';
+
+spl_autoload_register(function ($class) {
+    foreach (['../app/controllers/', '../app/models/'] as $dir) {
+        $file = $dir . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+});
+
+$router = new Router();
+$router->route();
 
 // Získání dotazu pro vyhledávání
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
